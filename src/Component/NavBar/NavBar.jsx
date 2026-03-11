@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router';
-
+import './NavBar.css'
 const NavBar = () => {
     const links = <>
         <NavLink to="/"> <li className='mr-2'>Home</li></NavLink>
