@@ -5,14 +5,18 @@ import { auth } from '../../firebase.init';
 
 
 const AuthProvider = ({ children }) => {
-    const [users,setUsers]=useState(null);
+    const [users, setUsers] = useState(null);
+    const [loading, setLoading] = useState(true);
     const createUser = (email, password) => {
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password)
     }
     const sginInUser = (email, password) => {
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password)
     }
-    const sginOutUser = ()=>{
+    const sginOutUser = () => {
+        setLoading(true);
         return signOut(auth);
     }
 
@@ -21,13 +25,15 @@ const AuthProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, (user) => {
             console.log("user is ", user);
             setUsers(user)
+            setLoading(false);
         })
-        return ()=>{
+        return () => {
             unSubscribe();
         }
     }, [])
     const userInfo = {
         users,
+        loading,
         createUser,
         sginInUser,
         sginOutUser

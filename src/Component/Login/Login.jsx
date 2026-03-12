@@ -1,15 +1,18 @@
 import React, { use } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { AuthContex } from '../Context/AuthContex';
 
 const Login = () => {
     const { sginInUser } = use(AuthContex);
+    const navigate = useNavigate();
     const handleSginIn = e => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
         sginInUser(email,password).then(result=>{
             console.log(result)
+            navigate('/')
+
         }).catch(error=>{
             console.log(error)
         })
