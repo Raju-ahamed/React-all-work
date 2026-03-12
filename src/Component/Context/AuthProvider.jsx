@@ -1,30 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AuthContex } from './AuthContex';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../../firebase.init';
 
 
 const AuthProvider = ({ children }) => {
+    const [users,setUsers]=useState(null);
+    const createUser = (email, password) => {
+        return createUserWithEmailAndPassword(auth, email, password)
+    }
+    const sginInUser = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+    const sginOutUser = ()=>{
+        return signOut(auth);
+    }
 
-    const createUser =(email,password)=>{
-       return createUserWithEmailAndPassword(auth,email,password)
-    }
-    const sginInUser = (email,password)=>{
-        return signInWithEmailAndPassword(auth,email,password)
-    }
-    onAuthStateChanged(auth,(users)=>{
-        if(users){
-            console.log("user is ",users)
+    // for log in profile
+    useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, (user) => {
+            console.log("user is ", user);
+            setUsers(user)
+        })
+        return ()=>{
+            unSubscribe();
         }
-        else{
-            console.log("user is",users)
-        }
-    })
-    const userInfo ={
+    }, [])
+    const userInfo = {
+        users,
         createUser,
-        sginInUser
+        sginInUser,
+        sginOutUser
     }
-    
+
     return (
         <AuthContex value={userInfo}>
             {children}

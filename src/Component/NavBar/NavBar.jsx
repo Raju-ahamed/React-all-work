@@ -1,15 +1,21 @@
-import React from 'react';
-import { NavLink } from 'react-router';
+import React, { use } from 'react';
+import { Link, NavLink } from 'react-router';
 import './NavBar.css'
+import { AuthContex } from '../Context/AuthContex';
 
 const NavBar = () => {
-    
+    const { users, sginOutUser } = use(AuthContex);
+    console.log(users)
+
     const links = <>
         <NavLink to="/"> <li className='mr-2'>Home</li></NavLink>
         <NavLink to="/login"> <li className='mr-2'>Login</li></NavLink>
         <NavLink to="/register"> <li className='mr-2'>Register</li></NavLink>
 
     </>
+    const handleSginOut = () => {
+        sginOutUser().then(result=>{}).catch(error=>{})
+    }
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="navbar-start">
@@ -35,7 +41,12 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Button</a>
+                {
+                    users ? <><span>{users.email}</span>
+                        <a onClick={handleSginOut} className="btn"> Sgin Out</a>
+                    </>
+                        : <Link to="/login"><span className='btn'>Log in</span></Link>
+                }
             </div>
         </div>
     );
