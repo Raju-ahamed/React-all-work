@@ -8,13 +8,19 @@ const NavBar = () => {
     console.log(users)
 
     const links = <>
-        <NavLink to="/"> <li className='mr-2'>Home</li></NavLink>
-        <NavLink to="/login"> <li className='mr-2'>Login</li></NavLink>
-        <NavLink to="/register"> <li className='mr-2'>Register</li></NavLink>
+        <li className='mr-2'><NavLink to="/"> Home </NavLink></li>
+        <li className='mr-2'><NavLink to="/login">Login </NavLink></li>
+        <li className='mr-2'><NavLink to="/register"> Register</NavLink></li>
+        {
+            users && <>
+                <li className='mr-2'><NavLink to="/orders">Order</NavLink></li>
+                <li className='mr-2'><NavLink to="/product">Product</NavLink></li>
+            </>
+        }
 
     </>
     const handleSginOut = () => {
-        sginOutUser().then(result=>{}).catch(error=>{})
+        sginOutUser().then(result => { }).catch(error => { })
     }
     return (
         <div className="navbar bg-base-100 shadow-sm">
